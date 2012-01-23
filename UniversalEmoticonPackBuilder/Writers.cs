@@ -11,9 +11,11 @@ class QipSmileConfig : SmileConfig
     private int counter = 0;
 
     public QipSmileConfig(string path, PackInfo pack)
-        : base(pack, "QIP")
+        : base(pack, "QIP", path)
     {
-        this.path = path + String.Format("{0}/", PackFullName);
+        this.path = packRootPath + String.Format("{0}/", PackFullName);
+        this.imagePath = this.path;
+
         Directory.CreateDirectory(this.path);
 
         defineFile = new StreamWriter(this.path + "_define.ini", false, Encoding.GetEncoding("windows-1251"));
@@ -29,9 +31,14 @@ class QipSmileConfig : SmileConfig
     protected override void EndFile()
     {
         defineFile.Flush();
-        var w = new StreamWriter(this.path + "_define_vis.ini", false, Encoding.GetEncoding("windows-1251"));
-        w.Write("1-{0}", counter + 1);
-        w.Flush();
+        defineFile.Close();
+
+        using (var w = new StreamWriter(this.path + "_define_vis.ini", false, Encoding.GetEncoding("windows-1251"))) 
+        {
+            w.Write("1-{0}", counter + 1);
+            w.Flush();
+            w.Close();
+        }
     }
 
     protected override string RenameFile(string fname)
@@ -59,9 +66,10 @@ class PidginSmileConfig : SmileConfig
     private StreamWriter pidginTheme;
 
     public PidginSmileConfig(string path, PackInfo pack)
-        : base(pack, "Pidgin")
+        : base(pack, "Pidgin", path)
     {
-        this.path = path + String.Format("{0}/{1}/", PackFullName);
+        this.path = packRootPath + String.Format("{0}/", PackFullName);
+        this.imagePath = this.path;
         Directory.CreateDirectory(this.path);
 
         pidginTheme = new StreamWriter(this.path + "theme", false, Encoding.GetEncoding("windows-1251"));
@@ -81,6 +89,7 @@ class PidginSmileConfig : SmileConfig
     protected override void EndFile()
     {
         pidginTheme.Flush();
+        pidginTheme.Close();
     }
 }
 
@@ -89,9 +98,10 @@ class AdiumSmileConfig : SmileConfig
     private XmlTextWriter plistWriter;
 
     public AdiumSmileConfig(string path, PackInfo pack)
-        : base(pack, "Adium")
+        : base(pack, "Adium", path)
     {
-        this.path = path + String.Format("{0} {1} by {2} for {3}/{0}.AdiumEmoticonSet/", pack.name, pack.version, pack.author, client);
+        this.path = packRootPath + String.Format("{0}.AdiumEmoticonSet/", PackFullName);
+        this.imagePath = this.path;
         Directory.CreateDirectory(this.path);
 
         plistWriter = new XmlTextWriter(this.path + "Emoticons.plist", Encoding.UTF8);
@@ -130,6 +140,7 @@ class AdiumSmileConfig : SmileConfig
         plistWriter.WriteEndElement();
         plistWriter.WriteEndDocument();
         plistWriter.Flush();
+        plistWriter.Close();
     }
 }
 
@@ -138,9 +149,10 @@ class MirandaSmileConfig : SmileConfig
     private StreamWriter mirandaTheme;
 
     public MirandaSmileConfig(string path, PackInfo pack)
-        : base(pack, "Miranda")
+        : base(pack, "Miranda", path)
     {
-        this.path = path + String.Format("{0} {1} by {2} for Miranda/Animated/", pack.name, pack.version, pack.author);
+        this.path = packRootPath + String.Format("{0}/", PackFullName);
+        this.imagePath = this.path + "Animated/";
         Directory.CreateDirectory(this.path);
 
         mirandaTheme = new StreamWriter(this.path + pack.name + ".msl", false, Encoding.GetEncoding("utf-8"));
@@ -159,6 +171,7 @@ class MirandaSmileConfig : SmileConfig
     protected override void EndFile()
     {
         mirandaTheme.Flush();
+        mirandaTheme.Close();
     }
 }
 
@@ -167,9 +180,10 @@ class WIMSkin : SmileConfig
     private StreamWriter wimSkin;
 
     public WIMSkin(string path, PackInfo pack)
-        : base(pack, "WIM")
+        : base(pack, "WIM", path)
     {
-        this.path = path + String.Format("{0} {1} by {2} for WIM/PlurkSmilies/", pack.name, pack.version, pack.author);
+        this.path = packRootPath + String.Format("{0}/", PackFullName);
+        this.imagePath = this.path + "PlurkSmilies/";
         Directory.CreateDirectory(this.path);
 
         wimSkin = new StreamWriter(this.path + pack.name + ".lua", false, Encoding.GetEncoding("utf-8"));
@@ -189,5 +203,6 @@ class WIMSkin : SmileConfig
     {
         wimSkin.WriteLine("};");
         wimSkin.Flush();
+        wimSkin.Close();
     }
 }
