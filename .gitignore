@@ -1,0 +1,6 @@
+/*/bin
+/*/obj
+/qip_buildmap/bin
+/qip_buildmap/obj
+*.csproj.user
+*.suo
