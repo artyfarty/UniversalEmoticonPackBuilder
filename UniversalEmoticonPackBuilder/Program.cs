@@ -18,6 +18,15 @@ namespace ConsoleUniversalEmoticonPackBuilder
 
         static void Main(string[] args)
         {
+            Console.WriteLine("UniversalEmoticonPackBuilder console utility");
+            Console.WriteLine("© by artyfarty 2012");
+            Console.WriteLine();
+            Console.WriteLine("Usage: ");
+            Console.WriteLine("uepackbuild [<path_to_config.json>]");
+            Console.WriteLine();
+            Console.WriteLine("uepackbuild will also look for config.json in current dir");
+            Console.WriteLine("All pack files should be in the same dir as config.json");
+
             // Default config
             Config = new BuilderConfig()
             {
@@ -41,15 +50,15 @@ namespace ConsoleUniversalEmoticonPackBuilder
                     .ReadObject(
                         new StreamReader(cfg_file, Encoding.UTF8).BaseStream
                      );
-                Directory.SetCurrentDirectory(new FileInfo(cfg_file).DirectoryName);
+                Directory.SetCurrentDirectory(new FileInfo(cfg_file).DirectoryName); 
+                UniversalEmoticonPackBuilder.BuildPacks(Config);
+
+                Console.WriteLine("Build finished.");
             }
-
-            BuildPacks(Config);
-        }
-
-        private static void BuildPacks(BuilderConfig Config)
-        {
-            throw new NotImplementedException();
+            else {
+                Console.WriteLine("Cannot open config file. Press any key to exit...");
+                Console.ReadLine();
+            }
         }
     }
 }

@@ -2,6 +2,6 @@
 	"name":"Example",
 	"version":"1.0",
 	"author":"artyfarty",
-	"map":"map.txt",
+	"map":"map.uemap",
 	"builders":["qip","adium","pidgin"]
 }

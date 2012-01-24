@@ -4,3 +4,4 @@
 /qip_buildmap/obj
 *.csproj.user
 *.suo
+/examplePack/build
