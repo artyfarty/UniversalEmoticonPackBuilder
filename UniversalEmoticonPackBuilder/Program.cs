@@ -79,6 +79,9 @@ namespace QIPSmileBuilder
                     case "wim":
                         builders.Add(new WIMSkin(build_dir, packinfo));
                         break;
+                    case "gmail":
+                        builders.Add(new GMailUserjs(build_dir, packinfo));
+                        break;
                 }
 
 
@@ -108,59 +111,6 @@ namespace QIPSmileBuilder
                 builders.ForEach(c => c.CopySmiley(s.Key, s.Value.Split(',')));
 
             builders.ForEach(c => c.Finish());
-        }
-    }
-
-    abstract class SmileConfig
-    {
-        protected string packRootPath;
-        protected string path;
-        protected string imagePath;
-
-        protected PackInfo pack;
-        protected string client;
-
-        public SmileConfig(PackInfo pack, string client, string path)
-        {
-            this.pack = pack;
-            this.client = client;
-            this.packRootPath = path + String.Format("{0}/", PathPackFullName);
-        }
-
-        public void CopySmiley(string orig_file, string[] equivs)
-        {
-            File.Copy(orig_file, imagePath + RenameFile(orig_file), true);
-            WriteEntry(RenameFile(orig_file), equivs);
-        }
-
-        public void Finish() {
-            EndFile();
-
-            using (ZipFile zip = new ZipFile())
-            {
-                zip.FlattenFoldersOnExtract = false;
-                zip.AddDirectory(packRootPath);
-                zip.Comment = pack.Description;
-                zip.Save(String.Format("build/{0}.zip", PathPackFullName));
-            }
-            Directory.CreateDirectory(packRootPath).Delete(true);
-        }
-
-        protected abstract void WriteEntry(string file, string[] equivs);
-        protected abstract void EndFile();
-        protected virtual string RenameFile(string fname)
-        {
-            return fname;
-        }
-
-        public string PackFullName
-        {
-            get { return String.Format("{0} for {1}", pack.FullName, client); }
-        }
-
-        public string PathPackFullName
-        {
-            get { return PackFullName.Replace(' ', '_').ToLower(); }
         }
     }
 

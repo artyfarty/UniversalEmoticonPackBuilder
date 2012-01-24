@@ -153,7 +153,7 @@ class MirandaSmileConfig : SmileConfig
     {
         this.path = packRootPath + String.Format("{0}/", PackFullName);
         this.imagePath = this.path + "Animated/";
-        Directory.CreateDirectory(this.path);
+        Directory.CreateDirectory(this.imagePath);
 
         mirandaTheme = new StreamWriter(this.path + pack.name + ".msl", false, Encoding.GetEncoding("utf-8"));
         mirandaTheme.AutoFlush = true;
@@ -204,5 +204,36 @@ class WIMSkin : SmileConfig
         wimSkin.WriteLine("};");
         wimSkin.Flush();
         wimSkin.Close();
+    }
+}
+
+class GMailUserjs : SmileConfig
+{
+    private TemplateWriter tw;
+    private int counter = 0;
+
+    public GMailUserjs(string path, PackInfo pack)
+        : base(pack, "Gmail", path)
+    {
+        this.path = packRootPath + String.Format("{0}/", PackFullName);
+        this.imagePath = this.path + "emo/";
+
+        Directory.CreateDirectory(this.imagePath);
+
+        tw = new TemplateWriter("chrome.user.js", String.Format("{0}{1}.user.js", this.path, this.PathPackFullName), pack);
+        tw.AddReplacement("__PACKURL__", @"http://artyfarty.ru/emo/");
+
+    }
+
+    protected override void WriteEntry(string file, string[] equivs)
+    {
+        tw.WriteLine(String.Format("['{0}','{1}'],", equivs[0], file));
+        counter++;
+    }
+
+    protected override void EndFile()
+    {
+        tw.data = tw.data.Substring(0, tw.data.Length - 2);
+        tw.Flush();
     }
 }
