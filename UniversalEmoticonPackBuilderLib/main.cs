@@ -9,7 +9,7 @@ using UniversalEmoticonPackBuilderLib.Builders;
 namespace UniversalEmoticonPackBuilderLib
 {
     public static class UniversalEmoticonPackBuilder {
-        public static void BuildPacks(PackInfo packinfo, string build_dir, List<string> requested_builders, string mapfile)
+        public static void BuildPacks(PackInfo packinfo, string build_dir, List<string> requested_builders, Dictionary<string, string> map)
         {
             // Cleanup and create build dir
             try
@@ -47,15 +47,22 @@ namespace UniversalEmoticonPackBuilderLib
                         break;
                 }
 
+            // Build!
+            foreach (var s in map)
+                builders.ForEach(c => c.CopySmiley(s.Key, s.Value.Split(',')));
 
+            builders.ForEach(c => c.Finish());
+        }
+
+        public static void BuildPacks(PackInfo packinfo, string build_dir, List<string> requested_builders, string mapfile) {
             // Load pack
-            Dictionary<string, string> pack = new Dictionary<string, string>();
+            Dictionary<string, string> map = new Dictionary<string, string>();
 
             if (mapfile.Length > 0)
             {
                 string line;
-                var map = new StreamReader(mapfile);
-                while ((line = map.ReadLine()) != null)
+                var mapStream = new StreamReader(mapfile);
+                while ((line = mapStream.ReadLine()) != null)
                 {
                     if (line.IndexOf('#') == 0) continue;
                     var spl = line.Split(new[] { ':' }, 2);
@@ -63,17 +70,18 @@ namespace UniversalEmoticonPackBuilderLib
 
                     var sname = spl[0];
                     var scode = spl[1];
-                    pack.Add(sname, scode);
+                    map.Add(sname, scode);
                 }
             }
             else
-                throw new Exception("No map defined");// pack = Config.Pack;
+                throw new Exception("No map defined");
 
-            // Build!
-            foreach (var s in pack)
-                builders.ForEach(c => c.CopySmiley(s.Key, s.Value.Split(',')));
-
-            builders.ForEach(c => c.Finish());
+            BuildPacks(
+                packinfo,
+                build_dir,
+                requested_builders,
+                map
+            );
         }
 
         public static void BuildPacks(BuilderConfig Config)

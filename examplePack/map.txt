@@ -1,4 +1,11 @@
-﻿ff.gif:(fuu)
+﻿# Comment
+
+# empty lines ok
+#
+# Entry format:
+# imagefile:code[,alternativecode[,alternativecode[,alternativecode ... ]]]
+
+ff.gif:(fuu)
 fi.gif:(gyay)
 fl.gif:(aha)
-ft.gif:(troll)
+ft.gif:(troll),troll.jpg
