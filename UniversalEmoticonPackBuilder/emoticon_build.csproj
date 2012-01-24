@@ -8,7 +8,7 @@
     <ProjectGuid>{FB29B9CB-D6D8-43F4-9011-538A0B9C7451}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QIPSmileBuilder</RootNamespace>
+    <RootNamespace>ConsoleUniversalEmoticonPackBuilder</RootNamespace>
     <AssemblyName>QIPSmileBuilder</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip">
-      <HintPath>.\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -49,14 +46,17 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmileConfig.cs" />
-    <Compile Include="TemplateWriter.cs" />
-    <Compile Include="Writers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\chrome.user.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UniversalEmoticonPackBuilderLib\UniversalEmoticonPackBuilderLib.csproj">
+      <Project>{2619794A-0A5D-4ED8-A3A8-1D36F1594CDC}</Project>
+      <Name>UniversalEmoticonPackBuilderLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

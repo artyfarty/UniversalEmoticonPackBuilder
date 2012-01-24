@@ -6,9 +6,9 @@ using System.IO;
 using Ionic.Zip;
 using System.Reflection;
 
-namespace QIPSmileBuilder
+namespace UniversalEmoticonPackBuilderLib
 {
-    abstract class SmileConfig
+    public abstract class SmilePackBuilder
     {
         protected string packRootPath;
         protected string path;
@@ -18,7 +18,7 @@ namespace QIPSmileBuilder
         protected PackInfo pack;
         protected string client;
 
-        public SmileConfig(PackInfo pack, string client, string path)
+        public SmilePackBuilder(PackInfo pack, string client, string path)
         {
             this.pack = pack;
             this.client = client;

@@ -1,0 +1,7 @@
+{
+	"name":"Example",
+	"version":"1.0",
+	"author":"artyfarty",
+	"map":"map.txt",
+	"builders":["qip","adium","pidgin"]
+}

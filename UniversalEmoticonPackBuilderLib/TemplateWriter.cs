@@ -5,9 +5,9 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 
-namespace QIPSmileBuilder
+namespace UniversalEmoticonPackBuilderLib
 {
-    class TemplateWriter
+    public class TemplateWriter
     {
         private string outfile;
         private Dictionary<string, string> replaces;
